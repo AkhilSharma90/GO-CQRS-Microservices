@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "78b9568c-d44c-47d0-9e49-9175ad695870",
+		"name": "CQRS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21362031"
+	},
+	"item": [
+		{
+			"name": "Get access token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{identity-api}}/connect/token?grant_type=password&client_id=clientId&client_secret=clientSecret&scope=all&username=admin&password=admin",
+					"host": [
+						"{{identity-api}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "client_id",
+							"value": "clientId"
+						},
+						{
+							"key": "client_secret",
+							"value": "clientSecret"
+						},
+						{
+							"key": "scope",
+							"value": "all"
+						},
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate access token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjbGllbnRJZCIsImV4cCI6MTczMjAxNzE5Mywic3ViIjoiMSJ9.OBPpnZJz9vDZ_N8ZWCxrH2xVm0C0tdlf3ZbWyfKujTLQ7p6hw1KwQbMTjSw14KOYsZfS7-0Va8_8-Kv0PnUU8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{identity-api}}/validate-token",
+					"host": [
+						"{{identity-api}}"
+					],
+					"path": [
+						"validate-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Identity service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{identity-api}}",
+					"host": [
+						"{{identity-api}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{product-api}}",
+					"host": [
+						"{{product-api}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjbGllbnRJZCIsImV4cCI6MTczMjAxNzE5Mywic3ViIjoiMSJ9.OBPpnZJz9vDZ_N8ZWCxrH2xVm0C0tdlf3ZbWyfKujTLQ7p6hw1KwQbMTjSw14KOYsZfS7-0Va8_8-Kv0PnUU8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"test-desc\",\r\n  \"name\": \"test-product\",\r\n  \"price\": 20,\r\n  \"inventoryId\": 1,\r\n  \"count\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{product-api}}/api/v1/products",
+					"host": [
+						"{{product-api}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjbGllbnRJZCIsImV4cCI6MTczMjAxNzE5Mywic3ViIjoiMSJ9.OBPpnZJz9vDZ_N8ZWCxrH2xVm0C0tdlf3ZbWyfKujTLQ7p6hw1KwQbMTjSw14KOYsZfS7-0Va8_8-Kv0PnUU8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"test-desc-updated\",\r\n  \"name\": \"test-product-updated\",\r\n  \"price\": 40,\r\n  \"inventoryId\": 1,\r\n  \"count\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{product-api}}/api/v1/products/ae695bbc-a84e-4a43-aa89-11f13150ba9b",
+					"host": [
+						"{{product-api}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"ae695bbc-a84e-4a43-aa89-11f13150ba9b"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "identity-api",
+			"value": "http://localhost:5002",
+			"type": "string"
+		},
+		{
+			"key": "product-api",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

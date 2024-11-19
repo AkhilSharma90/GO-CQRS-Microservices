@@ -14,119 +14,87 @@ cd internal/services/product_service/ && 	go run ./cmd/main.go
 cd internal/services/identity_service/ && 	go run ./cmd/main.go
 ```
 
-
 # API Documentation
 
-This documentation provides information about the Identity and Product API endpoints and how to use them in Postman.
-
-## Base URLs
-
-- Identity API: `http://localhost:5002`
-- Product API: `http://localhost:5000`
+#### Direct POSTMAN Collection file is in api-test folder.
 
 ## Authentication
 
-The API uses OAuth 2.0 password grant type for authentication. You'll need to obtain a token before accessing protected endpoints.
+### Get Access Token
+To obtain an access token, use the following command:
 
-### Getting an Access Token
-
-```http
-GET {{identity-api}}/connect/token
+```bash
+curl --location 'http://localhost:5002/connect/token?grant_type=password&client_id=clientId&client_secret=clientSecret&scope=all&username=admin&password=admin'
 ```
 
-**Query Parameters:**
-- `grant_type`: password
-- `client_id`: clientId
-- `client_secret`: clientSecret
-- `scope`: all
-- `username`: admin
-- `password`: admin
+### Validate Access Token
+To validate an access token, use this command:
 
-**Headers:**
-```
-Content-Type: application/json
-Accept: application/json
+```bash
+curl --location 'http://localhost:5002/validate-token' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--header 'authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
-The response will contain an access token that you'll need for subsequent requests.
+## Service Health Checks
 
-### Validating Token
+### Identity Service Health Check
+Check the health of the Identity service with the following command:
 
-```http
-GET {{identity-api}}/validate-token
+```bash
+curl --location 'http://localhost:5002'
 ```
 
-**Headers:**
-```
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer {your-access-token}
+### Product Service Health Check
+Verify the Product service health by executing:
+
+```bash
+curl --location 'http://localhost:5000'
 ```
 
-## Product API Endpoints
+## Product Operations
 
 ### Create Product
+To create a new product, use the command below:
 
-```http
-POST {{product-api}}/api/v1/products
-```
-
-**Headers:**
-```
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {your-access-token}
-```
-
-**Request Body:**
-```json
-{
+```bash
+curl --location 'http://localhost:5000/api/v1/products' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'authorization: Bearer YOUR_ACCESS_TOKEN' \
+--data '{
   "description": "test-desc",
   "name": "test-product",
-  "price": 20
-}
+  "price": 20,
+  "inventoryId": 1,
+  "count": 100
+}'
 ```
 
 ### Update Product
+To update an existing product, replace `{product-id}` with the UUID of the product you wish to update, and run:
 
-```http
-PUT {{product-api}}/api/v1/products/{product-id}
+```bash
+curl --location --request PUT 'http://localhost:5000/api/v1/products/{product-id}' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'authorization: Bearer YOUR_ACCESS_TOKEN' \
+--data '{
+  "description": "test-desc-updated",
+  "name": "test-product-updated",
+  "price": 40,
+  "inventoryId": 1,
+  "count": 100
+}'
 ```
 
-**Headers:**
-```
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {your-access-token}
-```
+> **Note**: Replace `YOUR_ACCESS_TOKEN` with the actual token received from the authentication endpoint.
 
-**Request Body:**
-```json
-{
-  "description": "test-desc",
-  "name": "test-product",
-  "price": 40
-}
-```
+## Environment Variables
 
-## Setting Up in Postman
-
-1. Create a new collection in Postman
-2. Set up environment variables:
-   - `identity-api`: `http://localhost:5002`
-   - `product-api`: `http://localhost:5000`
-
-3. For authenticated requests, you'll need to:
-   - First make the token request
-   - Copy the access token from the response
-   - Use it in the `Authorization` header for subsequent requests
-
-### Authentication Flow
-1. Make the token request
-2. The response will contain an `access_token`
-3. Use this token in the `Authorization` header as `Bearer {access_token}`
-4. You can validate the token using the validate-token endpoint
-5. Use the same token for Product API requests
+- **Identity API Base URL**: `http://localhost:5002`
+- **Product API Base URL**: `http://localhost:5000`
 
 # Golang Microservices
 
